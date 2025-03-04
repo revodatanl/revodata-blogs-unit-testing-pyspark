@@ -1,0 +1,15 @@
+resources:
+  jobs:
+    run_unit_tests:
+      name: run_unit_tests
+
+      email_notifications:
+        on_failure:
+          - luijk.r@gmail.com
+
+      max_concurrent_runs: 1
+
+      tasks:
+        - task_key: notebook_task
+          notebook_task:
+            notebook_path: ../notebooks/run_unit_tests.py

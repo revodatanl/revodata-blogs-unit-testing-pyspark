@@ -1,0 +1,38 @@
+name: Run Unit Tests
+
+# Run unit tests after every push to the main branch
+# and after a PR has been created or updated.
+on:
+    push:
+      branches:
+        - main
+      paths:
+        - 'src/**'
+        - 'test/**'
+    pull_request:
+      paths:
+          - 'src/**'
+          - 'test/**'
+      types: [opened, synchronize, reopened]
+
+# specify the environment variables that are usually in the ~/.databrickscfg file
+env:
+    DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+    DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+    DATABRICKS_SERVERLESS_COMPUTE_ID: auto
+
+jobs:
+  unit-test-notebook:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Run unit tests
+        run: |
+          uv run pytest tests --cov=src
