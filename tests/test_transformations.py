@@ -1,14 +1,13 @@
 """Tests for the transformations module."""
 
 import pytest
-from databricks.connect import DatabricksSession
+from databricks.connect import DatabricksSession  # type: ignore[import-untyped]
 from pyspark.sql import SparkSession
-
 from unit_testing_pyspark.transformations import filter_active_users
 
 
 @pytest.fixture(scope="session")
-def spark() -> SparkSession:
+def spark() -> DatabricksSession:
     """Fixture for creating a SparkSession instance."""
     return DatabricksSession.builder.getOrCreate()
 
